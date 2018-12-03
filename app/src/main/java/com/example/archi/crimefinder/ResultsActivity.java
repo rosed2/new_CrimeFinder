@@ -26,7 +26,18 @@ public class ResultsActivity extends AppCompatActivity {
         TextView crimesTitle = (TextView) findViewById(R.id.crimesTitle);
         String title = "Crimes within " + getRadius + " miles of latitude: " + latitude + " and longitude: " + longitude;
         crimesTitle.setText(title);
+        Button again_btn  = (Button) findViewById(R.id.again_btn);
+        again_btn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent startIntent = (new Intent(ResultsActivity.this, MainActivity.class));
+                 startActivity(startIntent);
+             }
+         }
+        );
+
 
     }
+
 }
 
