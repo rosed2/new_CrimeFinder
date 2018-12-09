@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private String latitude;
     private String start_Date;
     private String end_Date;
+
     private static RequestQueue requestQueue;
     private static final String TAG = "MainActivity";
     private String crimes = "";
@@ -62,69 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
-    void startAPICall() {
-        try {
-            String[] startDateStr = start_Date.split("/");
-            int[] startDate = new int[3];
-            for (int i = 0; i < 3; i++) {
-                startDate[i] = Integer.parseInt(startDateStr[i]);
-            }
-            String[] endDateStr = end_Date.split("/");
-            int[] endDate = new int[3];
-            for (int i = 0; i < 3; i++) {
-                endDate[i] = Integer.parseInt(endDateStr[i]);
-            }
-            String url = "https://jgentes-Crime-Data-v1.p.mashape.com/crime?enddate=" + endDate[0] +
-                    "%2F" + endDate[1] + "%2F" + endDate[2] + "&lat=" + Double.parseDouble(latitude) +
-                    "&long=" + Double.parseDouble(latitude) + "&startdate=" + startDate[0] + "%2F" +
-                    startDate[1] + "%2F" + startDate[2];
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                    Request.Method.GET,
-                    url,
-                    null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(final JSONObject response) {
-                            try {
-                                Log.d(TAG, response.toString());
-                                JSONArray crimeArray = response.getJSONArray(response.toString());
-                                String description = "";
-                                String datetime = "";
-                                String location = "";
-                                for (int count = 0; count < crimeArray.length(); count++) {
-                                    JSONObject obj = crimeArray.getJSONObject(count);
-                                    description = obj.getString("description");
-                                    datetime = obj.getString("datetime");
-                                    location = obj.getString("location");
-                                }
-                                crimes += "/n" + description + " at " + datetime + " at location: "
-                                        + location;
-                            } catch (Exception e1) {
-                                e1.printStackTrace();
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(final VolleyError error) {
-                            Log.w(TAG, error.toString());
-                        }
-                    }) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("X-Mashape-Key", "AIzaSyDpLSvpu8_KDhIDbfI9pHhAlEEKA8Hup0g");
-                    params.put("Accept", "application/json");
-                    return params;
-                }
-            };
-            requestQueue.add(jsonObjectRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
 }
