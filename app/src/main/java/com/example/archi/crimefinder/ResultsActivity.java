@@ -14,6 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,14 +25,16 @@ import java.util.Map;
 public class ResultsActivity extends AppCompatActivity {
     private static RequestQueue requestQueue;
     private String crimes = "";
-    private static final String TAG = "ResultsActivity";
+    private static final String TAG = "ResultsCallAPI";
     private double latitude;
     private double longitude;
     private int[] startDate;
     private int[] endDate;
+    private TextView listOfCrimes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestQueue = Volley.newRequestQueue(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
@@ -56,9 +59,8 @@ public class ResultsActivity extends AppCompatActivity {
         TextView crimesTitle = (TextView) findViewById(R.id.crimesTitle);
         String title = "Crimes at latitude: " + latitude + " and longitude: " + longitude + " beginning from: " + getStart + " to: " + getEnd;
         crimesTitle.setText(title);
-        TextView listOfCrimes = (TextView) findViewById(R.id.listOfCrimes);
         startAPICall();
-        listOfCrimes.setText(crimes);
+        listOfCrimes = (TextView) findViewById(R.id.listOfCrimes);
         Button again_btn = (Button) findViewById(R.id.again_btn);
         again_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,9 +95,10 @@ public class ResultsActivity extends AppCompatActivity {
                                     description = obj.getString("description");
                                     datetime = obj.getString("datetime");
                                     location = obj.getString("location");
+                                    crimes += "/n" + description + " at " + datetime + " at location: "
+                                            + location;
                                 }
-                                crimes += "/n" + description + " at " + datetime + " at location: "
-                                        + location;
+                                Log.d("ResultsResponse", response.toString());
                             } catch (Exception e1) {
                                 e1.printStackTrace();
                             }
@@ -110,7 +113,7 @@ public class ResultsActivity extends AppCompatActivity {
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("X-Mashape-Key", "AIzaSyDpLSvpu8_KDhIDbfI9pHhAlEEKA8Hup0g");
+                    params.put("X-Mashape-Key", "pLODZfqYocmsh1tPjKvuNg99Keifp12qyuSjsnIN5UFo4cLjal");
                     params.put("Accept", "application/json");
                     return params;
                 }
