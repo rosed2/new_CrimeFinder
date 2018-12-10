@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import android.text.method.ScrollingMovementMethod;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,6 +44,7 @@ public class ResultsActivity extends AppCompatActivity {
         city = location[0].trim();
         state = location[1].trim();
         listOfCrimes = (TextView) findViewById(R.id.listOfCrimes);
+        listOfCrimes.setMovementMethod(new ScrollingMovementMethod());
 
         startAPICall();
 
@@ -77,9 +79,13 @@ public class ResultsActivity extends AppCompatActivity {
                                 //JSONObject obj= new JSONObject(response.toString());
                                 JSONArray arr = response.getJSONArray("fuel_stations");
                                 Log.d("ResultsResponse", response.toString());
+                                Log.d("ResultsArray", ("" + arr.length()));
                                 for (int i = 0; i < arr.length(); i++) {
+                                    Log.d("ResultName", "" + arr.getJSONObject(i));
                                     JSONObject temp = (JSONObject) arr.getJSONObject(i);
-                                    locations += temp.get("street_address") + "\n";
+                                    //locations += temp.get("street_address") + "\n";
+                                    locations = locations +  temp.getString("street_address") + "\n";
+
                                 }
                                 listOfCrimes.setText(locations);
                             } catch (Exception e1) {
