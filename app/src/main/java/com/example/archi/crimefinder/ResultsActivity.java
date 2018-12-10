@@ -26,11 +26,13 @@ import java.util.Map;
 
 public class ResultsActivity extends AppCompatActivity {
     private static RequestQueue requestQueue;
-    private String places = "";
     private static final String TAG = "ResultsCallAPI";
-    private String city;
     private String state;
     TextView listOfCrimes;
+    private String message = "";
+    private JSONObject recentYear;
+    private int year;
+    private JSONObject correctYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +41,9 @@ public class ResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_results);
 
         Intent intent = getIntent();
-        String getCity = intent.getStringExtra("com.example.archi.crimefinder.CITY");
-        String[] location = getCity.split(",");
-        city = location[0].trim();
-        state = location[1].trim();
+        state = intent.getStringExtra("com.example.archi.crimefinder.STATE");
+        String yr = intent.getStringExtra("com.example.archi.crimefinder.YEAR");
+        year = Integer.parseInt(yr);
         listOfCrimes = (TextView) findViewById(R.id.listOfCrimes);
         listOfCrimes.setMovementMethod(new ScrollingMovementMethod());
 
@@ -54,16 +55,14 @@ public class ResultsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent startIntent = (new Intent(ResultsActivity.this, MainActivity.class));
                 startActivity(startIntent);
-
-
             }
         });
     }
 
     void startAPICall() {
         try {
-            String url = "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?api_key"
-                    + "=QvOgqLHvt4NR9MafmiD8StVehCERDT0Y4LE0QDbV&location=" + city + "+" + state;
+            String url = "https://api.usa.gov/crime/fbi/sapi/api/estimates/states/" + state
+                    + "?api_key=QvOgqLHvt4NR9MafmiD8StVehCERDT0Y4LE0QDbV";
 
             Log.d("ResponseURL", url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -74,20 +73,50 @@ public class ResultsActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(final JSONObject response) {
                             try {
-                                String locations = "";
                                 Log.d(TAG, response.toString());
-                                //JSONObject obj= new JSONObject(response.toString());
-                                JSONArray arr = response.getJSONArray("fuel_stations");
+
+                                JSONObject obj= new JSONObject(response.toString());
+                                JSONArray arr = response.getJSONArray("results");
                                 Log.d("ResultsResponse", response.toString());
-                                Log.d("ResultsArray", ("" + arr.length()));
+                                recentYear = arr.getJSONObject(0);
                                 for (int i = 0; i < arr.length(); i++) {
                                     Log.d("ResultName", "" + arr.getJSONObject(i));
                                     JSONObject temp = (JSONObject) arr.getJSONObject(i);
-                                    //locations += temp.get("street_address") + "\n";
-                                    locations = locations +  temp.getString("street_address") + "\n";
-
+                                    if (temp.getInt("year") > recentYear.getInt("year")) {
+                                        recentYear = temp;
+                                    }
+                                    if (temp.getInt("year") == year) {
+                                        correctYear = temp;
+                                    }
                                 }
-                                listOfCrimes.setText(locations);
+                                if (correctYear != null) {
+                                    message += "Year: " + correctYear.get("year");
+                                    message += "\nViolent Crimes: " + correctYear.getString("violent_crime");
+                                    message += "\nHomicides: " + correctYear.getString("homicide");
+                                    message += "\nRobberies: " + correctYear.getString("robbery");
+                                    message += "\nAggravated Assaults: " + correctYear.getString("aggravated_assault");
+                                    message += "\nProperty Crimes: " + correctYear.getString("property_crime");
+                                    message += "\nBurglaries: " + correctYear.getString("burglary");
+                                    message += "\nLarcenies: " + correctYear.getString("larceny");
+                                    message += "\nMotor Vehicle Theft: " + correctYear.getString("motor_vehicle_theft");
+                                    message += "\nArson: " + correctYear.getString("arson");
+                                    message += "\nRape: " + correctYear.getString("rape_legacy");
+                                    listOfCrimes.setText(message);
+                                } else {
+                                    message += "Year: " + recentYear.get("year");
+                                    message += "\nViolent Crimes: " + recentYear.getString("violent_crime");
+                                    message += "\nHomicides: " + recentYear.getString("homicide");
+                                    message += "\nRobberies: " + recentYear.getString("robbery");
+                                    message += "\nAggravated Assaults: " + recentYear.getString("aggravated_assault");
+                                    message += "\nProperty Crimes: " + recentYear.getString("property_crime");
+                                    message += "\nBurglaries: " + recentYear.getString("burglary");
+                                    message += "\nLarcenies: " + recentYear.getString("larceny");
+                                    message += "\nMotor Vehicle Theft: " + recentYear.getString("motor_vehicle_theft");
+                                    message += "\nArson: " + recentYear.getString("arson");
+                                    message += "\nRape: " + recentYear.getString("rape_legacy");
+                                    listOfCrimes.setText(message);
+                                }
+
                             } catch (Exception e1) {
                                 e1.printStackTrace();
                             }

@@ -13,39 +13,69 @@
         android:layout_marginTop="48dp"
         android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
-        android:text="Enter Your City"
+        android:text="Enter Your State"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/enterCity"
+        app:layout_constraintBottom_toTopOf="@+id/enterState"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.178" />
 
     <EditText
-        android:id="@+id/enterCity"
+        android:id="@+id/enterState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="192dp"
+        android:layout_marginBottom="264dp"
         android:ems="10"
-        android:hint="City, State (Abbreviation)"
+        android:hint="State (Abbreviation)"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/sub_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/yearTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="276dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Enter the Year"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/enterYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:ems="10"
+        android:hint="Year (1995-2017)"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yearTitle" />
+
     <Button
         android:id="@+id/sub_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="156dp"
-        android:layout_marginRight="156dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginRight="148dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/colorPrimaryDark"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yearTitle"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
