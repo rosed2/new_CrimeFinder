@@ -13,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -24,13 +25,11 @@ import java.util.Map;
 
 public class ResultsActivity extends AppCompatActivity {
     private static RequestQueue requestQueue;
-    private String crimes = "";
+    private String places = "";
     private static final String TAG = "ResultsCallAPI";
-    private double latitude;
-    private double longitude;
-    private int[] startDate;
-    private int[] endDate;
-    private TextView listOfCrimes;
+    private String city;
+    private String state;
+    TextView listOfCrimes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,44 +38,32 @@ public class ResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_results);
 
         Intent intent = getIntent();
-        String getLat = intent.getStringExtra("com.example.archi.crimefinder.LATITUDE");
-        latitude = Double.parseDouble(getLat);
-        String getLong = intent.getStringExtra("com.example.archi.crimefinder.LONGITUDE");
-        longitude = Double.parseDouble(getLong);
-        String getStart = intent.getStringExtra("com.example.archi.crimefinder.START");
-        String getEnd = intent.getStringExtra("com.example.archi.crimefinder.END");
-        String[] startDateStr = getStart.split("/");
-        startDate = new int[3];
-        for (int i = 0; i < 3; i++) {
-            startDate[i] = Integer.parseInt(startDateStr[i]);
-        }
-        String[] endDateStr = getStart.split("/");
-        endDate = new int[3];
-        for (int i = 0; i < 3; i++) {
-            endDate[i] = Integer.parseInt(endDateStr[i]);
-        }
-
-        TextView crimesTitle = (TextView) findViewById(R.id.crimesTitle);
-        String title = "Crimes at latitude: " + latitude + " and longitude: " + longitude + " beginning from: " + getStart + " to: " + getEnd;
-        crimesTitle.setText(title);
-        startAPICall();
+        String getCity = intent.getStringExtra("com.example.archi.crimefinder.CITY");
+        String[] location = getCity.split(",");
+        city = location[0].trim();
+        state = location[1].trim();
         listOfCrimes = (TextView) findViewById(R.id.listOfCrimes);
+
+        startAPICall();
+
         Button again_btn = (Button) findViewById(R.id.again_btn);
         again_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent startIntent = (new Intent(ResultsActivity.this, MainActivity.class));
                 startActivity(startIntent);
+
+
             }
         });
     }
+
     void startAPICall() {
         try {
-            String url = "https://jgentes-Crime-Data-v1.p.mashape.com/crime?enddate=" + endDate[0] +
-                    "%2F" + endDate[1] + "%2F" + endDate[2] + "&lat=" + latitude +
-                    "&long=" + longitude + "&startdate=" + startDate[0] + "%2F" +
-                    startDate[1] + "%2F" + startDate[2];
+            String url = "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?api_key"
+                    + "=QvOgqLHvt4NR9MafmiD8StVehCERDT0Y4LE0QDbV&location=" + city + "+" + state;
 
+            Log.d("ResponseURL", url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET,
                     url,
@@ -85,20 +72,16 @@ public class ResultsActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(final JSONObject response) {
                             try {
+                                String locations = "";
                                 Log.d(TAG, response.toString());
-                                JSONArray crimeArray = response.getJSONArray(response.toString());
-                                String description = "";
-                                String datetime = "";
-                                String location = "";
-                                for (int count = 0; count < crimeArray.length(); count++) {
-                                    JSONObject obj = crimeArray.getJSONObject(count);
-                                    description = obj.getString("description");
-                                    datetime = obj.getString("datetime");
-                                    location = obj.getString("location");
-                                    crimes += "/n" + description + " at " + datetime + " at location: "
-                                            + location;
-                                }
+                                //JSONObject obj= new JSONObject(response.toString());
+                                JSONArray arr = response.getJSONArray("fuel_stations");
                                 Log.d("ResultsResponse", response.toString());
+                                for (int i = 0; i < arr.length(); i++) {
+                                    JSONObject temp = (JSONObject) arr.getJSONObject(i);
+                                    locations += temp.get("street_address") + "\n";
+                                }
+                                listOfCrimes.setText(locations);
                             } catch (Exception e1) {
                                 e1.printStackTrace();
                             }
@@ -110,13 +93,7 @@ public class ResultsActivity extends AppCompatActivity {
                     Log.w(TAG, error.toString());
                 }
             }) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("X-Mashape-Key", "pLODZfqYocmsh1tPjKvuNg99Keifp12qyuSjsnIN5UFo4cLjal");
-                    params.put("Accept", "application/json");
-                    return params;
-                }
+
             };
             requestQueue.add(jsonObjectRequest);
         } catch (Exception e) {

@@ -23,18 +23,13 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String longitude;
-    private String latitude;
-    private String start_Date;
-    private String end_Date;
+    private String city;
 
-    private static RequestQueue requestQueue;
     private static final String TAG = "MainActivity";
-    private String crimes = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestQueue = Volley.newRequestQueue(this);
         setContentView(R.layout.activity_main);
 
         Button sub_button = (Button) findViewById(R.id.sub_button);
@@ -43,21 +38,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent startIntent = (new Intent(MainActivity.this, ResultsActivity.class));
 
-                EditText enterLatitude = (EditText) findViewById(R.id.enterLatitude);
-                EditText enterLongitude = (EditText) findViewById(R.id.enterLongitude);
-                latitude = enterLatitude.getText().toString();
-                longitude = enterLongitude.getText().toString();
-                startIntent.putExtra("com.example.archi.crimefinder.LATITUDE", latitude);
-                startIntent.putExtra("com.example.archi.crimefinder.LONGITUDE", longitude);
+                EditText enterCity = (EditText) findViewById(R.id.enterCity);
+                city = enterCity.getText().toString();
 
-                EditText start_date = (EditText) findViewById(R.id.start_Date);
-                EditText end_date = (EditText) findViewById(R.id.end_Date);
-                start_Date = start_date.getText().toString();
-                end_Date = end_date.getText().toString();
-                startIntent.putExtra("com.example.archi.crimefinder.START", start_Date);
-                startIntent.putExtra("com.example.archi.crimefinder.END", end_Date);
-
-                startIntent.putExtra("com.example.archi.crimefinder.CRIMES", crimes);
+                startIntent.putExtra("com.example.archi.crimefinder.CITY", city);
 
                 startActivity(startIntent);
 
