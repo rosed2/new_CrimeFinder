@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/addressTitle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="24dp"
         android:layout_marginTop="48dp"
         android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
@@ -21,13 +21,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/enterState"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="92dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="84dp"
         android:ems="10"
         android:gravity="center_horizontal"
         android:hint="State (Abbreviation)"
@@ -40,26 +41,26 @@
 
     <TextView
         android:id="@+id/yearTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="118dp"
         android:layout_height="51dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="12dp"
         android:gravity="center_horizontal"
         android:text="Enter the Year"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/enterYear"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/enterYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="132dp"
         android:ems="10"
         android:gravity="center_horizontal"
         android:hint="Year (1995-2017)"
