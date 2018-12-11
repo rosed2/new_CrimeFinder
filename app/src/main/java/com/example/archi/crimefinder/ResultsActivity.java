@@ -91,7 +91,7 @@ public class ResultsActivity extends AppCompatActivity {
                                 }
                                 if (correctYear != null) {
                                     message += "Year: " + correctYear.get("year");
-                                    message += "\nViolent Crimes: " + correctYear.getString("violent_crime");
+                                    message += "\n\nViolent Crimes: " + correctYear.getString("violent_crime");
                                     message += "\nHomicides: " + correctYear.getString("homicide");
                                     message += "\nRobberies: " + correctYear.getString("robbery");
                                     message += "\nAggravated Assaults: " + correctYear.getString("aggravated_assault");
@@ -100,7 +100,7 @@ public class ResultsActivity extends AppCompatActivity {
                                     message += "\nLarcenies: " + correctYear.getString("larceny");
                                     message += "\nMotor Vehicle Theft: " + correctYear.getString("motor_vehicle_theft");
                                     message += "\nArson: " + correctYear.getString("arson");
-                                    message += "\nRape: " + correctYear.getString("rape_legacy");
+                                    message += "\nRapes: " + correctYear.getString("rape_legacy");
                                     listOfCrimes.setText(message);
                                 } else {
                                     message += "Year: " + recentYear.get("year");
@@ -113,7 +113,7 @@ public class ResultsActivity extends AppCompatActivity {
                                     message += "\nLarcenies: " + recentYear.getString("larceny");
                                     message += "\nMotor Vehicle Theft: " + recentYear.getString("motor_vehicle_theft");
                                     message += "\nArson: " + recentYear.getString("arson");
-                                    message += "\nRape: " + recentYear.getString("rape_legacy");
+                                    message += "\nRapes: " + recentYear.getString("rape_legacy");
                                     listOfCrimes.setText(message);
                                 }
 
